@@ -1,6 +1,8 @@
 package com.lina.individuelluppgift.security;
 
 import com.lina.individuelluppgift.user.User;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,9 +11,10 @@ import java.security.Key;
 import java.util.UUID;
 
 @Component
+@NoArgsConstructor
 public class JwtHandler {
     private String secretKey = "jajskfllakdmmfkdkirnfn123";
-    private Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+    private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public String generateToken(User user){
         String userId = String.valueOf(user.getId());
@@ -24,5 +27,7 @@ public class JwtHandler {
                 .signWith(key)
                 .compact();
     }
+
+
 
 }

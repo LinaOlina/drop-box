@@ -1,35 +1,33 @@
 package com.lina.individuelluppgift.user;
 
+import com.lina.individuelluppgift.security.JwtHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class UserService  implements UserDetailsService {
+public class UserService   {
     private final UserRepository userRepository;
+    private final JwtHandler jwtHandler;
     private Map<String, User> users = new HashMap<>();
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtHandler jwtHandler) {
         this.userRepository = userRepository;
+        this.jwtHandler = jwtHandler;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
+
 
     public List<User> getUsers(){
         return userRepository.findAll();
     }
 
     public void registerUser(User user) throws IllegalAccessException{
-        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
-        if (userOptional.isPresent()){
-            throw new IllegalAccessException("Email is already taken, please use another one.");
+        User user1 = userRepository.findByUsername(user.getUsername());
+        if (user1 != null){
+            throw new IllegalAccessException("Username is already taken, please use another one.");
 
         }
         userRepository.save(user);
@@ -40,6 +38,22 @@ public class UserService  implements UserDetailsService {
     public void deleteUser(String id){
         UUID uuid = UUID.fromString(id);
         userRepository.deleteById(uuid);
+    }
+
+    public String login(String username, String password){
+        boolean isValid = userRepository.isValidUser(username,password);
+
+        if(isValid){
+            User user = findUserByUsername(username);
+            return jwtHandler.generateToken(user);
+        }
+        else{
+            return "User doesn't exist!";
+        }
+    }
+
+    public User findUserByUsername(String username){
+        return userRepository.findByUsername(username);
     }
 
 

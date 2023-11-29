@@ -29,7 +29,16 @@ public class UserController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable String id){
-    userService.deleteUser(id);
-    return ResponseEntity.noContent().build();
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user){
+        var result = userService.login(user.getUsername(),user.getPassword());
+
+        return result;
+
+    }
+
 }
