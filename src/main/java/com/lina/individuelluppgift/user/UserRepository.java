@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
 
 
@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "WHERE u.username = :username AND u.password = :password", nativeQuery = true)
     boolean isValidUser(String username, String password);
 
-    User findByUsername(String username);
+    //User findByUsername(String username);
+
+    Optional<User> findByUsername(String username);
 
 }

@@ -1,5 +1,6 @@
 package com.lina.individuelluppgift.user;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void registerNewUser(@RequestBody User user) throws IllegalAccessException {
+    public void registerNewUser(@Valid @RequestBody User user) throws IllegalAccessException {
         userService.registerUser(user);
     }
 
@@ -34,10 +35,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user){
-        var result = userService.login(user.getUsername(),user.getPassword());
+    public String login(@Valid @RequestBody User user){
+        return  userService.login(user.getUsername(),user.getPassword());
 
-        return result;
+
 
     }
 

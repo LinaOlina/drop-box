@@ -1,6 +1,5 @@
 package com.lina.individuelluppgift.user;
 
-import com.lina.individuelluppgift.security.JwtHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ public class UserService   {
         return userRepository.findAll();
     }
 
+    /*
     public void registerUser(User user) throws IllegalAccessException{
         User user1 = userRepository.findByUsername(user.getUsername());
         if (user1 != null){
@@ -34,6 +34,8 @@ public class UserService   {
         System.out.println("Sucessfully saved user: " + user);
 
     }
+
+
 
     public void deleteUser(String id){
         UUID uuid = UUID.fromString(id);
@@ -55,6 +57,8 @@ public class UserService   {
     public User findUserByUsername(String username){
         return userRepository.findByUsername(username);
     }
+
+     */
 
 
 }
