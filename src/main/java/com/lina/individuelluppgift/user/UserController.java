@@ -18,6 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    /*
     @PostMapping("/register")
     public void registerNewUser(@Valid @RequestBody User user) throws IllegalAccessException {
         userService.registerUser(user);
@@ -41,5 +42,7 @@ public class UserController {
 
 
     }
+
+     */
 
 }

@@ -8,6 +8,7 @@ import java.util.*;
 
 @Service
 public class UserService   {
+    /*
     private final UserRepository userRepository;
     private final JwtHandler jwtHandler;
     private Map<String, User> users = new HashMap<>();
@@ -22,6 +23,8 @@ public class UserService   {
     public List<User> getUsers(){
         return userRepository.findAll();
     }
+
+     */
 
     /*
     public void registerUser(User user) throws IllegalAccessException{
