@@ -18,22 +18,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    /*
-    @PostMapping("/register")
-    public void registerNewUser(@Valid @RequestBody User user) throws IllegalAccessException {
-        userService.registerUser(user);
-    }
+
+
 
     @GetMapping("/all")
     public List<User> getAllUsers(){
         return userService.getUsers();
     }
 
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable String id){
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id){
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+    /*
 
     @PostMapping("/login")
     public String login(@Valid @RequestBody User user){

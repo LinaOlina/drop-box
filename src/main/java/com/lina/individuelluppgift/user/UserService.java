@@ -8,14 +8,13 @@ import java.util.*;
 
 @Service
 public class UserService   {
-    /*
+
     private final UserRepository userRepository;
-    private final JwtHandler jwtHandler;
+
     private Map<String, User> users = new HashMap<>();
     @Autowired
-    public UserService(UserRepository userRepository, JwtHandler jwtHandler) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.jwtHandler = jwtHandler;
     }
 
 
@@ -24,26 +23,20 @@ public class UserService   {
         return userRepository.findAll();
     }
 
-     */
+    public void deleteUser(Integer id){
+        userRepository.deleteById(id);
+    }
+
+
+
+
+
+
+
+
+
 
     /*
-    public void registerUser(User user) throws IllegalAccessException{
-        User user1 = userRepository.findByUsername(user.getUsername());
-        if (user1 != null){
-            throw new IllegalAccessException("Username is already taken, please use another one.");
-
-        }
-        userRepository.save(user);
-        System.out.println("Sucessfully saved user: " + user);
-
-    }
-
-
-
-    public void deleteUser(String id){
-        UUID uuid = UUID.fromString(id);
-        userRepository.deleteById(uuid);
-    }
 
     public String login(String username, String password){
         boolean isValid = userRepository.isValidUser(username,password);
