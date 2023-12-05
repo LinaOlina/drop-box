@@ -20,12 +20,13 @@ public class Folder {
     private Integer id;
 
     @Column(name = "folder_name")
-    private String map_name;
+    private String folder_name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false )
     private User user;
 
-
-
+    public Folder(Integer id) {
+        this.id = id;
+    }
 }
