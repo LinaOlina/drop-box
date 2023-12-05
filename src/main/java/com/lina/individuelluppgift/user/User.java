@@ -18,11 +18,12 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "_users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private Integer id;
 
     @NotBlank(message = "Username cannot be blank")
