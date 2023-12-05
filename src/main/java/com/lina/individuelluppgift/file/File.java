@@ -24,6 +24,10 @@ public class File {
     private Integer id;
 
     private String file_name;
+    private String type;
+
+    @Lob
+    private byte[] data;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id", nullable = false )
