@@ -1,5 +1,6 @@
 package com.lina.individuelluppgift.Folder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lina.individuelluppgift.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class Folder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false )
+    @JsonIgnore
     private User user;
 
     public Folder(Integer id) {

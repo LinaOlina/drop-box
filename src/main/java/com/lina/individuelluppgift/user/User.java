@@ -1,5 +1,6 @@
 package com.lina.individuelluppgift.user;
 
+import com.lina.individuelluppgift.Folder.Folder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,10 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Folder> folders;
 
     public User(String username, String password) {
         this.username = username;
