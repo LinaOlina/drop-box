@@ -1,5 +1,6 @@
 package com.lina.individuelluppgift.Folder;
 
+import com.lina.individuelluppgift.exception.FolderNotFoundException;
 import com.lina.individuelluppgift.file.File;
 import com.lina.individuelluppgift.file.FileRepository;
 import com.lina.individuelluppgift.user.User;
@@ -30,4 +31,13 @@ public class FolderService {
         return folderRepository.existsById(folderId);
     }
 
+
+    public Folder getFolder(Integer folderId){
+        return folderRepository.findById(folderId)
+                .orElseThrow(() -> new FolderNotFoundException("Folder with id: " + folderId + " does not exist"));
+    }
+
+    public List<Folder> findFolderByUser(User user) {
+        return folderRepository.findFolderByUser(user);
+    }
 }

@@ -1,5 +1,6 @@
 package com.lina.individuelluppgift.user;
 
+import com.lina.individuelluppgift.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,7 +26,7 @@ public class UserService   {
     }
 
     public void deleteUser(Integer id){
-        userRepository.deleteById(id);
+        userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with id " + id + " was not found."));
     }
 
     public User findByUsername(String username) {
@@ -34,33 +35,6 @@ public class UserService   {
     }
 
 
-
-
-
-
-
-
-
-
-    /*
-
-    public String login(String username, String password){
-        boolean isValid = userRepository.isValidUser(username,password);
-
-        if(isValid){
-            User user = findUserByUsername(username);
-            return jwtHandler.generateToken(user);
-        }
-        else{
-            return "User doesn't exist!";
-        }
-    }
-
-    public User findUserByUsername(String username){
-        return userRepository.findByUsername(username);
-    }
-
-     */
 
 
 }

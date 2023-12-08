@@ -32,6 +32,7 @@ public class Folder {
     private User user;
 
     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<File> files;
 
     public Folder(Integer id) {

@@ -1,6 +1,7 @@
 package com.lina.individuelluppgift.user;
 
 import com.lina.individuelluppgift.security.JwtService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,10 @@ public class UserController {
 
     @Autowired
     public UserController(UserService userService) {
-
         this.userService = userService;
-
     }
 
-
-
-
+@Transactional
     @GetMapping("/getUser/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
         User user = userService.findByUsername(username);
@@ -40,16 +37,5 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
-    /*
-
-    @PostMapping("/login")
-    public String login(@Valid @RequestBody User user){
-        return  userService.login(user.getUsername(),user.getPassword());
-
-
-
-    }
-
-     */
 
 }

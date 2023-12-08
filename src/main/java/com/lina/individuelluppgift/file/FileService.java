@@ -58,7 +58,7 @@ public class FileService {
 
     public boolean isSizeValid(MultipartFile file) {
         long fileSize = file.getSize();
-        long maxSize =  1024 * 1024;
+        long maxSize =  2* 1024 * 1024;
 
         return fileSize <= maxSize;
     }
