@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface FolderRepository extends JpaRepository<Folder, Integer> {
 
-    List<Folder> findFolderByUser(User user);
+    Folder findFolderById(Integer folderId);
 
+    List<Folder> findFoldersByUser(User user);
 }

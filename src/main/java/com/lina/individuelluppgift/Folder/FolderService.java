@@ -4,11 +4,13 @@ import com.lina.individuelluppgift.exception.FolderNotFoundException;
 import com.lina.individuelluppgift.file.File;
 import com.lina.individuelluppgift.file.FileRepository;
 import com.lina.individuelluppgift.user.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Transactional
 @Service
 public class FolderService {
 
@@ -32,12 +34,11 @@ public class FolderService {
     }
 
 
-    public Folder getFolder(Integer folderId){
-        return folderRepository.findById(folderId)
-                .orElseThrow(() -> new FolderNotFoundException("Folder with id: " + folderId + " does not exist"));
+
+    public Folder getFolderById(Integer folderId){
+        return folderRepository.findFolderById(folderId);
+
     }
 
-    public List<Folder> findFolderByUser(User user) {
-        return folderRepository.findFolderByUser(user);
-    }
 }
+

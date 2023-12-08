@@ -30,7 +30,6 @@ public class FileService {
         this.fileRepository = fileRepository;
         this.folderRepository = folderRepository;
     }
-    private final String uploadDir = "your-upload-directory"; // Replace with your actual upload directory
 
 
     @Transactional
