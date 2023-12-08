@@ -40,5 +40,9 @@ public class FolderService {
 
     }
 
+    public void deleteFolder(Integer folderId) {
+        Folder folder = folderRepository.findFolderById(folderId);
+        folderRepository.delete(folder);
+    }
 }
 

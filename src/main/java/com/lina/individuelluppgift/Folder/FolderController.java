@@ -36,6 +36,12 @@ public class FolderController {
         return new ResponseEntity<>(folder, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{folderId}")
+    public ResponseEntity<HttpStatus> deleteFolder(@PathVariable Integer folderId){
+        folderService.deleteFolder(folderId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Folder> createFolder(@RequestBody Folder folder, Principal principal) {
         Optional<User> currentUserOptional = userRepository.findByUsername(principal.getName());
