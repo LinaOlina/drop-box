@@ -1,6 +1,8 @@
 package com.lina.individuelluppgift.file;
 
 import com.lina.individuelluppgift.Folder.FolderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +14,7 @@ public class FileController {
     private final FolderService folderService;
     private final FileService fileService;
 
+    @Autowired
     public FileController(FolderService folderService, FileService fileService) {
         this.folderService = folderService;
         this.fileService = fileService;
@@ -19,8 +22,8 @@ public class FileController {
 
     @PostMapping("/upload/{folderId}")
     public ResponseEntity<String> uploadFile(
-            @PathVariable Integer folderId,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            @PathVariable Integer folderId) {
 
         try {
             // Check if the folder exists
@@ -29,10 +32,10 @@ public class FileController {
             }
 
             // Store the file and update the Folder entity
-            String fileName = fileService.storeFile(file, folderId);
-            folderService.addFileToFolder(folderId, fileName);
+            fileService.storeFile(file, folderId);
+            String message = "Successfully uploaded: " + file.getOriginalFilename();
 
-            return ResponseEntity.ok("File uploaded successfully");
+            return new ResponseEntity<>(message, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error uploading file");
         }

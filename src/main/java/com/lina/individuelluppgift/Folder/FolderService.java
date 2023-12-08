@@ -15,8 +15,9 @@ public class FolderService {
     private final FileRepository fileRepository;
 
     @Autowired
-    public FolderService(FolderRepository folderRepository) {
+    public FolderService(FolderRepository folderRepository, FileRepository fileRepository) {
         this.folderRepository = folderRepository;
+        this.fileRepository = fileRepository;
     }
 
 
@@ -29,19 +30,4 @@ public class FolderService {
         return folderRepository.existsById(folderId);
     }
 
-    public void addFileToFolder(Integer folderId, String fileName) {
-        //Hämta mapp
-        Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new RuntimeException("Folder not found"));
-
-        File file = new File();
-        file.setFile_name(fileName);
-        file.setFolder(folder);
-
-        fileRepository.save(file);
-        List<File> files = folder.getFiles();
-        files.add(file);
-        folder.setFiles(files);
-
-        folderRepository.save(folder);
-    }
 }
