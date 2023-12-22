@@ -3,6 +3,7 @@ package com.lina.individuelluppgift.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,8 +24,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( auth -> auth.requestMatchers("/auth/register", "auth/authenticate",
-                                "/user/all","/user/getUser/{username}").permitAll()
+                .authorizeHttpRequests( auth -> auth.requestMatchers("/auth/register", "auth/authenticate").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/{folderId}/files/{fileId}").authenticated()
                         .anyRequest().authenticated())
 
                 .sessionManagement((sessions) -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

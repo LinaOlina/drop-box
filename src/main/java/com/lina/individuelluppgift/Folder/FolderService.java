@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Transactional
 @Service
@@ -24,6 +26,13 @@ public class FolderService {
     }
 
 
+    public Folder findFolderById(Integer folderId) {
+        Folder folder = folderRepository.findFolderById(folderId)
+                .orElseThrow(() -> new FolderNotFoundException("Could not find folder with id " + folderId));
+
+        return folder;
+    }
+
     public Folder createFolder(Folder folder, User user) {
        folder.setUser(user);
        return folderRepository.save(folder);
@@ -35,14 +44,21 @@ public class FolderService {
 
 
 
-    public Folder getFolderById(Integer folderId){
-        return folderRepository.findFolderById(folderId);
-
+    public Folder getFolderById(Integer folderId) {
+        return folderRepository.findFolderByIdWithFiles(folderId)
+                .orElseThrow(() -> new FolderNotFoundException("Folder with id " + folderId + " could not be found."));
     }
 
     public void deleteFolder(Integer folderId) {
-        Folder folder = folderRepository.findFolderById(folderId);
+        Folder folder = folderRepository.findFolderById(folderId)
+                        .orElseThrow(() -> new FolderNotFoundException("Folder with id " + folderId + " could not be found."));
         folderRepository.delete(folder);
+    }
+
+
+    public List<File> getFilesFromFolder(Integer folderId) {
+
+        return folderRepository.findFilesByFolderId(folderId);
     }
 }
 

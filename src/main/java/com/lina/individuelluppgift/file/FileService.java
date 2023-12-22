@@ -3,10 +3,14 @@ package com.lina.individuelluppgift.file;
 
 import com.lina.individuelluppgift.Folder.Folder;
 import com.lina.individuelluppgift.Folder.FolderRepository;
+import com.lina.individuelluppgift.exception.FolderOrFileNotFoundException;
 import com.lina.individuelluppgift.exception.SizeTooLargeException;
 import com.lina.individuelluppgift.user.User;
+import com.lina.individuelluppgift.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,42 +19,56 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
+import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-
+@Transactional
 @Service
 public class FileService {
 
     private final FileRepository fileRepository;
     private final FolderRepository folderRepository;
+    private final UserRepository userRepository;
 
-    public FileService(FileRepository fileRepository, FolderRepository folderRepository) {
+    public FileService(FileRepository fileRepository, FolderRepository folderRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
         this.folderRepository = folderRepository;
+        this.userRepository = userRepository;
     }
 
 
-    @Transactional
-    public String storeFile(MultipartFile file, Integer folderId) throws IOException {
+    public File getFileInFolderById(Integer folderId, Integer fileId) {
 
-        if(isSizeValid(file)) {
-            Folder folder = folderRepository.findById(folderId)
-                    .orElseThrow();
+        return (File) fileRepository.findByIdAndFolderId(fileId, folderId)
+                .orElseThrow(() -> new FolderOrFileNotFoundException("Could not find folder or file."));
+    }
 
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            File newFile = new File(fileName, file.getContentType(), file.getBytes());
+    public ResponseEntity<String> storeFile(MultipartFile file, Integer folderId, Principal principal) throws IOException {
+
+        Optional<User> currentUserOptional = userRepository.findByUsername(principal.getName());
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow();
+
+        if(currentUserOptional.isPresent()) {
+            User currentUser = currentUserOptional.get();
+
+           String bytes = Base64.getEncoder().encodeToString(file.getBytes());
+            String fileName = file.getOriginalFilename();
+            File newFile = new File(fileName, file.getContentType(), bytes);
             newFile.setFolder(folder);
+            newFile.setUser(currentUser);
+
             fileRepository.save(newFile);
-            return newFile.getFile_name();
+            return ResponseEntity.ok("Successfully uploaded: " + file.getOriginalFilename() +
+                    " to folder with id: " + folderId + " on user " + currentUser.getUsername());
         } else {
-            throw new SizeTooLargeException("File size is too big.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
         //ByteArrayResource resource = new ByteArrayResource(newFile.getData());
-
-
-
 
     }
 
@@ -62,6 +80,16 @@ public class FileService {
         return fileSize <= maxSize;
     }
 
+    public String deleteFile( Integer fileId) {
+        File file = fileRepository.findFileById(fileId);
+        fileRepository.delete(file);
+        return "File deleted successfully! ";
+    }
+
+
+    public List<File> getAllFiles() {
+        return fileRepository.findAll();
+    }
 }
 
 

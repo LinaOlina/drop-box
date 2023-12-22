@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_folders")
+@Table(name = "folders")
 public class Folder {
     @Id
     @GeneratedValue
@@ -26,16 +26,20 @@ public class Folder {
     @Column(name = "folder_name")
     private String folder_name;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false )
-    @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<File> files;
 
     public Folder(Integer id) {
         this.id = id;
     }
+
+
+
+
 }

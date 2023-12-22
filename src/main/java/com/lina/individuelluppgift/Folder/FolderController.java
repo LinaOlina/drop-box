@@ -1,5 +1,6 @@
 package com.lina.individuelluppgift.Folder;
 
+import com.lina.individuelluppgift.file.File;
 import com.lina.individuelluppgift.user.User;
 import com.lina.individuelluppgift.user.UserRepository;
 import com.lina.individuelluppgift.user.UserService;
@@ -29,12 +30,21 @@ public class FolderController {
         this.folderRepository = folderRepository;
     }
 
-    @GetMapping("/getFolder/{folderId}")
-    public ResponseEntity<Folder> getFolderById(@PathVariable Integer folderId){
-        Folder folder = folderRepository.findFolderById(folderId);
 
+    @GetMapping("/getFolder/{folderId}")
+    public ResponseEntity<Folder> getFolderById(@PathVariable Integer folderId) {
+        Folder folder = folderService.getFolderById(folderId);
         return new ResponseEntity<>(folder, HttpStatus.OK);
     }
+
+
+
+    @GetMapping("/{folderId}/files")
+    public ResponseEntity<List<File>> getFilesFromFolder(@PathVariable Integer folderId){
+        List<File> files = folderService.getFilesFromFolder(folderId);
+        return new ResponseEntity<>(files, HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/delete/{folderId}")
     public ResponseEntity<HttpStatus> deleteFolder(@PathVariable Integer folderId){
