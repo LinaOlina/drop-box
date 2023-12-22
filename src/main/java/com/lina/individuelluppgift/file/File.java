@@ -24,7 +24,6 @@ import java.util.Map;
 @Table(name = "files")
 public class File {
 
-    // id, name, byte = data, size
 
     @Id
     @GeneratedValue
@@ -35,9 +34,8 @@ public class File {
     private String type;
 
     @Lob
-    @Column(name = "data", nullable = false)
-    @JsonSerialize(using = ByteArraySerializer.class)
-    private String data;
+    @Column(name = "data")
+    private byte[] data;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -45,20 +43,15 @@ public class File {
 
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "folder_id", nullable = false )
     private Folder folder;
 
-    public File(String name, String type, String data) {
+    public File(String name, String type) {
         this.name = name;
         this.type = type;
-        this.data = data;
+
     }
 
-    public Map<String, Object> toJson() {
-        Map<String, Object> result = new LinkedHashMap<>();
-        result.put("image_id", this.id);
-        result.put("filename", this.name);
-        return result;
-    }
+
 }

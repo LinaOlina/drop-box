@@ -9,7 +9,10 @@ import com.lina.individuelluppgift.user.User;
 import com.lina.individuelluppgift.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -58,7 +61,7 @@ public class FileService {
 
            String bytes = Base64.getEncoder().encodeToString(file.getBytes());
             String fileName = file.getOriginalFilename();
-            File newFile = new File(fileName, file.getContentType(), bytes);
+            File newFile = new File(fileName, file.getContentType());
             newFile.setFolder(folder);
             newFile.setUser(currentUser);
 
@@ -90,6 +93,8 @@ public class FileService {
     public List<File> getAllFiles() {
         return fileRepository.findAll();
     }
+
+
 }
 
 

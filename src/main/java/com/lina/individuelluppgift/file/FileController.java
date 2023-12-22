@@ -3,7 +3,11 @@ package com.lina.individuelluppgift.file;
 import com.lina.individuelluppgift.Folder.FolderService;
 import com.lina.individuelluppgift.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/file")
@@ -19,13 +24,38 @@ public class FileController {
     private final FolderService folderService;
     private final FileService fileService;
 
+    private final FileRepository fileRepository;
+
 
     @Autowired
-    public FileController(FolderService folderService, FileService fileService) {
+    public FileController(FolderService folderService, FileService fileService, FileRepository fileRepository) {
         this.folderService = folderService;
         this.fileService = fileService;
+        this.fileRepository = fileRepository;
     }
 
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Integer fileId) {
+        Optional<File> fileOptional = fileRepository.findById(fileId);
+
+        if (fileOptional.isPresent()) {
+            File file = fileOptional.get();
+
+            // Create a ByteArrayResource to represent the file data
+            ByteArrayResource resource = new ByteArrayResource(file.getData());
+
+            // Set content type based on file type (you might want to improve this)
+            MediaType mediaType = MediaType.APPLICATION_OCTET_STREAM;
+            System.out.println();
+
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getId() + "\"")
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping("/{folderId}/files/{fileId}")
     public ResponseEntity<File> getFileInFolderById(
@@ -46,9 +76,14 @@ public class FileController {
     }
 
     @GetMapping("/getAllFiles")
-    public List<File> getAllFiles(){
-
-        return fileService.getAllFiles();
+    public List<FileDTO> getAllFiles(){
+        List<File> files = fileService.getAllFiles();
+        return files.stream()
+                .map( x-> {
+                    FileDTO newFileDTO = new FileDTO(x.getId(), x.getName());
+                    return newFileDTO;
+                })  // Convert File entity to FileDTO
+                .collect(Collectors.toList());
 
     }
 
