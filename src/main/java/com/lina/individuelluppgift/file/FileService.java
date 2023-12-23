@@ -59,9 +59,9 @@ public class FileService {
         if(currentUserOptional.isPresent()) {
             User currentUser = currentUserOptional.get();
 
-           String bytes = Base64.getEncoder().encodeToString(file.getBytes());
+
             String fileName = file.getOriginalFilename();
-            File newFile = new File(fileName, file.getContentType());
+            File newFile = new File(fileName, file.getContentType(), file.getBytes());
             newFile.setFolder(folder);
             newFile.setUser(currentUser);
 

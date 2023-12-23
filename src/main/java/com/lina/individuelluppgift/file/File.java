@@ -47,9 +47,10 @@ public class File {
     @JoinColumn(name = "folder_id", nullable = false )
     private Folder folder;
 
-    public File(String name, String type) {
+    public File(String name, String type, byte[] data) {
         this.name = name;
         this.type = type;
+        this.data = data;
 
     }
 
