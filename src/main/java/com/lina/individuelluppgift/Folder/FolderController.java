@@ -64,7 +64,7 @@ public class FolderController {
             Folder result = folderService.createFolder(folder, currentUser);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } else {
-            // Handle the case where the user is not found
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }

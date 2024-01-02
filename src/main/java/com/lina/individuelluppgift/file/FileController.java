@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,10 +42,9 @@ public class FileController {
         if (fileOptional.isPresent()) {
             File file = fileOptional.get();
 
-            // Create a ByteArrayResource to represent the file data
+
             ByteArrayResource resource = new ByteArrayResource(file.getData());
 
-            // Set content type based on file type (you might want to improve this)
             MediaType mediaType = MediaType.APPLICATION_OCTET_STREAM;
             System.out.println();
 
@@ -82,7 +82,7 @@ public class FileController {
                 .map( x-> {
                     FileDTO newFileDTO = new FileDTO(x.getId(), x.getName());
                     return newFileDTO;
-                })  // Convert File entity to FileDTO
+                })
                 .collect(Collectors.toList());
 
     }
@@ -92,8 +92,9 @@ public class FileController {
 
 
     @DeleteMapping("/delete/{fileId}")
-    public ResponseEntity<HttpStatus> deleteFile(@PathVariable Integer fileId){
-        fileService.deleteFile(fileId);
+    public ResponseEntity<HttpStatus> deleteFile(@PathVariable Integer fileId, Authentication authentication){
+        String username = authentication.getName();
+        fileService.deleteFile(fileId, username);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

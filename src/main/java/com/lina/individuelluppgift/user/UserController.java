@@ -19,13 +19,12 @@ public class UserController {
 
     private final UserService userService;
     private final JwtService jwtService;
-    private final UserRepository userRepository;
+
 
     @Autowired
-    public UserController(UserService userService, JwtService jwtService, UserRepository userRepository) {
+    public UserController(UserService userService, JwtService jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
-        this.userRepository = userRepository;
     }
 
 @Transactional

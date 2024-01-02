@@ -71,22 +71,16 @@ public class FileService {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
-        //ByteArrayResource resource = new ByteArrayResource(newFile.getData());
+
 
     }
 
 
-    public boolean isSizeValid(MultipartFile file) {
-        long fileSize = file.getSize();
-        long maxSize =  2* 1024 * 1024;
-
-        return fileSize <= maxSize;
-    }
-
-    public String deleteFile( Integer fileId) {
-        File file = fileRepository.findFileById(fileId);
+    public void deleteFile( Integer fileId, String username) {
+        File file = fileRepository.findFileByIdAndUsername(fileId, username)
+                        .orElseThrow(() ->  new FolderOrFileNotFoundException("Could not find file."));
         fileRepository.delete(file);
-        return "File deleted successfully! ";
+
     }
 
 
