@@ -38,6 +38,10 @@ public class UserService   {
     }
 
 
+    public Integer findUserIdByUsername(String username) {
 
+        return userRepository.findUserIdByUsername(username);
+    }
+// FORTSÄTT MED DENNA
 
 }
