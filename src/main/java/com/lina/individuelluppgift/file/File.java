@@ -1,7 +1,6 @@
 package com.lina.individuelluppgift.file;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lina.individuelluppgift.Folder.Folder;
 import com.lina.individuelluppgift.user.User;
 import jakarta.persistence.*;
@@ -9,12 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Data
 @Builder

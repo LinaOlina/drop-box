@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private Integer id;
 
     @NotBlank(message = "Username cannot be blank")
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @NotBlank(message = "Password cannot be blank")

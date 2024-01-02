@@ -1,7 +1,6 @@
 package com.lina.individuelluppgift.file;
 
 import com.lina.individuelluppgift.Folder.FolderService;
-import com.lina.individuelluppgift.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;

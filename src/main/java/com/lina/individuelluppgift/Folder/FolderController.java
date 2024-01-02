@@ -1,16 +1,13 @@
 package com.lina.individuelluppgift.Folder;
 
-import com.lina.individuelluppgift.exception.FolderNotFoundException;
-import com.lina.individuelluppgift.exception.NotAuthorizedException;
+
 import com.lina.individuelluppgift.file.File;
 import com.lina.individuelluppgift.user.User;
 import com.lina.individuelluppgift.user.UserRepository;
-import com.lina.individuelluppgift.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,16 +19,13 @@ import java.util.Optional;
 public class FolderController {
 
     private final FolderService folderService;
-    private final UserService userService;
     private final UserRepository userRepository;
 
-    private final FolderRepository folderRepository;
     @Autowired
-    public FolderController(FolderService folderService, UserService userService, UserRepository userRepository, FolderRepository folderRepository) {
+    public FolderController(FolderService folderService, UserRepository userRepository) {
         this.folderService = folderService;
-        this.userService = userService;
         this.userRepository = userRepository;
-        this.folderRepository = folderRepository;
+
     }
 
 

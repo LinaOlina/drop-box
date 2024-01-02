@@ -1,6 +1,5 @@
 package com.lina.individuelluppgift.file;
 
-import com.lina.individuelluppgift.Folder.Folder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface FileRepository extends JpaRepository<File, Integer> {
 
-    File findFileById(Integer fileId);
+
 
     @Query("SELECT f FROM File f WHERE f.id = :fileId AND f.folder.user.username = :username")
     Optional<File> findFileByIdAndUsername(@Param("fileId") Integer fileId, @Param("username") String username);
